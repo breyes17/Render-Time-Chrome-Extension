@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remaining Hours</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+  </head>
+  <body class="p-4">
+    <div class="flex flex-col space-y-4">
+      <div class="space-y-2">
+        <label for="timeLimit" class="block font-medium">Time Limit</label>
+        <input
+          type="number"
+          name="timeLimit"
+          id="timeLimit"
+          value="8"
+          min="0"
+          max="12"
+          tabindex="3"
+          class="w-full p-2 border rounded time"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <p class="font-medium">Rendered Time</p>
+        <label for="hours" class="block font-medium">Hours</label>
+        <input
+          type="number"
+          value="0"
+          name="hours"
+          id="hours"
+          min="0"
+          max="23"
+          tabindex="1"
+          class="w-full p-2 border rounded time"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+        />
+        <label for="minutes" class="block font-medium">Minutes</label>
+        <input
+          type="number"
+          value="0"
+          name="minutes"
+          id="minutes"
+          min="0"
+          max="59"
+          tabindex="2"
+          class="w-full p-2 border rounded time"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+        />
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="flex flex-col p-4 bg-red-100 rounded space-y-2">
+      <p class="font-medium">
+        Estimated Time start: <span id="start">start</span>
+      </p>
+      <p class="font-medium">Estimated Time end: <span id="end">end</span></p>
+      <p class="font-medium">
+        Remaining Hour/s: <span id="remaining">remaining</span>
+      </p>
+    </div>
+
+    <script>
+      // JavaScript logic will go here
+      const triggerRenderedTime = (e) => {
+        console.log(e);
+      };
+
+      const timeElements = document.getElementsByClassName("time");
+
+      for (const element of timeElements) {
+        element.addEventListener("change", triggerRenderedTime);
+      }
+    </script>
+  </body>
+</html>
