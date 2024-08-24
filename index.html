@@ -55,26 +55,11 @@
     <hr class="my-4" />
 
     <div class="flex flex-col p-4 bg-red-100 rounded space-y-2">
-      <p class="font-medium">
-        Estimated Time start: <span id="start">start</span>
-      </p>
-      <p class="font-medium">Estimated Time end: <span id="end">end</span></p>
-      <p class="font-medium">
-        Remaining Hour/s: <span id="remaining">remaining</span>
-      </p>
+      <p class="font-medium">Estimated Time start: <span id="start"></span></p>
+      <p class="font-medium">Estimated Time end: <span id="end"></span></p>
+      <p class="font-medium">Remaining Hour/s: <span id="remaining"></span></p>
     </div>
 
-    <script>
-      // JavaScript logic will go here
-      const triggerRenderedTime = (e) => {
-        console.log(e);
-      };
-
-      const timeElements = document.getElementsByClassName("time");
-
-      for (const element of timeElements) {
-        element.addEventListener("change", triggerRenderedTime);
-      }
-    </script>
+    <script src="index.js"></script>
   </body>
 </html>
