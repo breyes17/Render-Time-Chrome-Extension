@@ -4,6 +4,9 @@ const minutes = document.getElementById("minutes");
 const displayTimeStart = document.getElementById("start");
 const displayTimeEnd = document.getElementById("end");
 const displayRemainingTime = document.getElementById("remaining");
+const MINUTES_PER_HOUR = 60;
+const ZERO = 0;
+const TWELVE = 12;
 
 const triggerRenderedTime = (e) => {
   const currentTime = new Date();
@@ -19,9 +22,6 @@ const triggerRenderedTime = (e) => {
     estimatedTimeStart.getHours() + timeLimit.value * 1
   );
 
-  const remainingTime = new Date(estimatedTimeEnd);
-  remainingTime.setHours(timeLimit.value - hours.value * 1);
-
   // display time
   displayTimeStart.innerText = displayTime(
     estimatedTimeStart.getHours(),
@@ -33,14 +33,11 @@ const triggerRenderedTime = (e) => {
     estimatedTimeEnd.getMinutes()
   );
 
-  console.log(remainingTime.getHours());
-  const isDisplayRemaningTime =
-    remainingTime.getHours() === 0 ||
-    remainingTime.getHours() < timeLimit.value;
+  const remainingTime = processRemainingTime();
 
-  displayRemainingTime.innerText = isDisplayRemaningTime
-    ? `${pad(remainingTime.getHours())}:${pad(remainingTime.getMinutes())}`
-    : "Over time!";
+  displayRemainingTime.innerText = remainingTime.message
+    ? remainingTime.message
+    : `${pad(remainingTime.hours)}:${pad(remainingTime.minutes)}`;
 };
 
 const pad = (text, limit = 2) => {
@@ -51,9 +48,9 @@ const pad = (text, limit = 2) => {
 };
 
 const displayTime = (hours, minutes) => {
-  const isPM = hours >= 12;
-  const moduloTwelve = hours % 12;
-  const displayHour = moduloTwelve === 0 ? 12 : moduloTwelve;
+  const isPM = hours >= TWELVE;
+  const moduloTwelve = hours % TWELVE;
+  const displayHour = moduloTwelve === ZERO ? TWELVE : moduloTwelve;
   return `${pad(displayHour)}:${pad(minutes)} ${isPM ? "PM" : "AM"}`;
 };
 
@@ -62,3 +59,41 @@ const timeElements = document.getElementsByClassName("time");
 for (const element of timeElements) {
   element.addEventListener("change", triggerRenderedTime);
 }
+
+const convertHoursToMinutes = (hours, minutes = 0) => {
+  const toMinutes = hours * MINUTES_PER_HOUR;
+  return toMinutes + minutes;
+};
+
+const convertMinutesToHours = (minutes) => {
+  return {
+    hours: Math.trunc(minutes / MINUTES_PER_HOUR),
+    minutes: minutes % MINUTES_PER_HOUR,
+  };
+};
+
+const processRemainingTime = () => {
+  const limit = convertHoursToMinutes(timeLimit.value * 1);
+  const rendered = convertHoursToMinutes(hours.value * 1, minutes.value * 1);
+  const timeRemaining = limit - rendered;
+
+  let output = {
+    message: null,
+    hours: ZERO,
+    minutes: ZERO,
+  };
+
+  if (timeRemaining === ZERO) {
+    return { ...output, message: "Time End. Take a rest" };
+  }
+
+  if (timeRemaining < ZERO) {
+    return { ...output, message: "Overtime!" };
+  }
+
+  return {
+    ...output,
+    hours: convertMinutesToHours(timeRemaining).hours,
+    minutes: convertMinutesToHours(timeRemaining).minutes,
+  };
+};
