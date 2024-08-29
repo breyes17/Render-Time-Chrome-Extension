@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Remaining Time",
+  "version": "1.0.0",
+  "description": "You can how much time has left on your working hours.",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "permissions": ["scripting"],
+  "host_permissions": ["http://*/*", "https://*/*"]
+}
